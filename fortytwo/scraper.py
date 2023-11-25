@@ -3,7 +3,6 @@ from selectolax.parser import HTMLParser
 from dataclasses import dataclass
 from urllib.parse import urljoin
 from rich import print
-import json
 import csv
 
 @dataclass
@@ -43,25 +42,23 @@ def pagination_loop(client): # loop through different main pages, and get the li
     url = "https://www.fortytwo.sg/study-room/study-desk.html"
     page = get_page(client, url)
     links = parse_links(page.body_html)
-    print("current page: ", url)
-    print("total links: ", len(links))
     while page.next_page["href"]:
-        print("current page: ", page.next_page["href"])
         url = page.next_page["href"]
         page = get_page(client,url)
         links |= parse_links(page.body_html)
-        print("total links: ", len(links))
     return links
 
 def detail_page_loop(client, links): # from each individual listing page, get the necessary information
     products = []
     n = 0
     for url in links:
+        print(url)
         page = get_page(client, url)
         new_product = parse_detail(page.body_html)
         if new_product.name == "None":
             continue
         products.append(parse_detail(page.body_html))
+        print(f"product {n}: {new_product}")
         n += 1
         if n % 20 == 0:
             print("current product: ", n)
