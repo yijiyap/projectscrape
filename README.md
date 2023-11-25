@@ -1,6 +1,5 @@
 # projectscrape
 A project to learn scraping with python
-```
 
 ## Scraped sites (in chronological order)
 Because this is a learning project, the sites scraped are incremental in difficulty.
